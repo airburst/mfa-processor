@@ -1,0 +1,24 @@
+{
+  "name": "",
+  "version": "",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "dev": "babel src --out-dir dist --source-maps inline --watch",
+    "build": "babel src --out-dir dist --source-maps inline",
+    "prepublish": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "pouchdb": "^6.0.7",
+    "source-map-support": "^0.4.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.6.5",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-plugin-transform-runtime": "^6.8.0",
+    "babel-runtime": "^6.6.1"
+  }
+}
