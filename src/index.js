@@ -24,19 +24,17 @@ const testForCompleted = (doc) => {
 const moveRecord = (doc) => {
     completedDatabase.add(doc)
         .then(removeIfNoError(doc._id))
-        .then(watchedDatabase.remove(doc._id))
-        .then(console.log('Assessment ' + doc._id + ' was completed at ' + new Date().toISOString()))
-        .catch((err) => console.log('Completed record was not moved: ', doc._id, ' : ', err))
+        .catch(err => console.log('Error: Completed record could not be added: ', doc._id, ' : ', JSON.stringify(err)))
 }
 
 // Ensure that record exists in completed database before removing
 const removeIfNoError = (id) => {
-    return new Promise((resolve, reject) => {
-        completedDatabase.fetch(id)
-            .then(doc => { return doc })
-            .then(result => { resolve(result) })
-            .catch((err) => { reject(err) })
-    })
+    completedDatabase.fetch(id)
+        .then(doc => { 
+            watchedDatabase.remove(doc._id)
+                .then(console.log('Assessment ' + doc._id + ' was completed at ' + new Date().toISOString()))
+        })
+        .catch(err => console.log('Error: Completed record could not be removed: ', id, ' : ', JSON.stringify(err)))
 }
 
 // Subcribe to any changes in the local database
