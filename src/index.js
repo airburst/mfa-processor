@@ -2,9 +2,11 @@
 import { install } from 'source-map-support';
 install();
 
-const Visits = require('./visits')
-const couchServer = 'http://couchdb.fairhursts.net/'       // TODO: move into config
+const PouchService = require('./pouchService')
+const couchServer = 'http://couchdb.fairhursts.net:5984'       // TODO: move into config
 const db = 'visits'
+
+const pouch = new PouchService(db, couchServer)
 
 // Ignore deleted records
 const processChange = (change) => {
@@ -22,10 +24,10 @@ const moveDoc = (doc) => {
 }
 
 // Subcribe to any changes in the local database
-Visits.subscribe(processChange)
+pouch.subscribe(processChange)
 
 // Calling Sync() will grab a full dataset from the server
 // and create an open event listener that keeps this app alive
-Visits.sync()
+pouch.sync()
 
 console.log('MFA Processing Service Running...')
