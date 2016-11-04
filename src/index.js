@@ -32,7 +32,6 @@ const moveRecord = (doc) => {
 // Ensure that record exists in completed database before removing
 const removeIfNoError = (id) => {
     return new Promise((resolve, reject) => {
-        console.log('fetching', id)
         completedDatabase.fetch(id)
             .then(doc => { return doc })
             .then(result => { resolve(result) })
@@ -47,7 +46,5 @@ watchedDatabase.subscribe(processChange)
 // and create an open event listener that keeps this app alive
 watchedDatabase.sync()
 completedDatabase.sync()
-
-removeIfNoError('doesnotexist')
 
 console.log('MFA Processing Service Running...')
