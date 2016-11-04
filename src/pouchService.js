@@ -12,11 +12,7 @@ module.exports = class PouchService {
 
     makeDoc(doc) {
         const id = (doc._id && (doc._id !== "")) ? doc._id : new Date().toISOString()
-        return Object.assign(
-            {},
-            doc,
-            { _id: id }
-        )
+        return Object.assign({}, doc, { _id: id })
     }
 
     fetchAll() {
@@ -69,18 +65,18 @@ module.exports = class PouchService {
             .on('change', (change) => { handleUpdate(change) })
             .on('complete', (info) => { console.log('Subscription ended', info) })
             .on('error', function (err) { console.log('Subscription error', err) })
+        console.log('Subscribed to ' + this.localDb)
     }
 
     unsubscribe() {
         this.syncToken.cancel()
-        console.log('Stopped syncing with ' + this.remoteDb + ' db')
     }
 
     sync() {
         if (this.willSync) {
             this.db.sync(this.remoteDb, { live: true, retry: true })
                 .on('error', console.log.bind(console));
-            console.log('Syncing with ' + this.remoteDb + ' db')
+            console.log('Syncing with ' + this.remoteDb)
         }
     }
 }

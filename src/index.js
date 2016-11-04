@@ -3,10 +3,10 @@ import { install } from 'source-map-support';
 install();
 
 const PouchService = require('./pouchService')
-const couchServer = 'http://couchdb.fairhursts.net:5984'       // TODO: move into config
+const remoteServer = 'http://couchdb.fairhursts.net:5984'
 const db = 'visits'
 
-const pouch = new PouchService(db, couchServer)
+const pouch = new PouchService(db, remoteServer)
 
 // Ignore deleted records
 const processChange = (change) => {
