@@ -12,6 +12,7 @@ module.exports = class PouchService {
 
     makeDoc(doc) {
         const id = (doc._id && (doc._id !== "")) ? doc._id : new Date().toISOString()
+        // doc._rev = undefined
         return Object.assign({}, doc, { _id: id })
     }
 
@@ -23,7 +24,16 @@ module.exports = class PouchService {
             })
                 .then((docs) => { resolve(docs.rows) })
                 .catch((err) => { reject(err) })
-        }).bind(this)
+        })
+    }
+
+    fetch(id) {
+        return new Promise((resolve, reject) => {
+            this.db.get(id)
+                .then((doc) => { return doc })
+                .then((result) => { resolve(result) })
+                .catch((err) => { reject(err) })
+        })
     }
 
     add(details) {
@@ -32,17 +42,17 @@ module.exports = class PouchService {
             this.db.put(payload)
                 .then((result) => { resolve(result) })
                 .catch((err) => { reject(err) })
-        }).bind(this)
+        })
     }
 
     update(details) {
         return new Promise((resolve, reject) => {
             if (!details._id) { reject({ err: 'No id provided - cannot complete update' })}
             this.db.get(details._id)
-                .then((doc) => { return this.db.put(this.makeDoc(details)) })
+                .then((doc) => { return this.db.put(details) })     // Test - removed makeDoc
                 .then((result) => { resolve(result) })
                 .catch((err) => { reject(err) })
-        }).bind(this)
+        })
     }
 
     remove(id) {
@@ -51,7 +61,7 @@ module.exports = class PouchService {
                 .then((doc) => { return this.db.remove(doc) })
                 .then((result) => { resolve(result) })
                 .catch((err) => { reject(err) })
-        }).bind(this)
+        })
     }
 
     subscribe(handleUpdate) {

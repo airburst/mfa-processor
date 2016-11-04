@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "pouchdb": "^6.0.7",
+    "pouchdb-upsert": "^2.0.2",
     "source-map-support": "^0.4.0"
   },
   "devDependencies": {
