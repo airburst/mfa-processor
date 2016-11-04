@@ -28,7 +28,6 @@ module.exports = class PouchService {
 
     add(details) {
         let payload = this.makeDoc(details)
-        console.log('About to add', payload)                //
         return new Promise((resolve, reject) => {
             this.db.put(payload)
                 .then((result) => { resolve(result) })
@@ -37,7 +36,6 @@ module.exports = class PouchService {
     }
 
     update(details) {
-        console.log('About to Change', details)            //
         return new Promise((resolve, reject) => {
             if (!details._id) { reject({ err: 'No id provided - cannot complete update' })}
             this.db.get(details._id)
