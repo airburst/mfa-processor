@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 import { install } from 'source-map-support';
 install();
-import { hexEncode, hexDecode } from './hexEncoder'
+const config = require('config');
+import { getUserDbs } from './couchService'
+
+const user = config.get('couchdb.user');
+const pass = config.get('couchdb.password');
+const remoteServer = config.get('couchdb.remoteServer');
 
 // Get the collection of databases to watch
-// GET http://processor:MFAProcessorApp@localhost:5986/_dbs/_design/userDbList/_view/userDbView
+getUserDbs()
 
 const PouchService = require('./pouchService'),
-    remoteServer = 'http://couchdb.fairhursts.net:5984',
     watchedDb = 'visits',
     completedDb = 'completed-visits'
 
