@@ -2,54 +2,32 @@
 import { install } from 'source-map-support';
 install();
 const config = require('config');
-const cradle = require('cradle')
-// import { getUserDatabaseList } from './couchService'
+import CouchService from './couchService'
 
-const user = config.get('couchdb.user')
-const pass = config.get('couchdb.password')
-const completedDb = config.get('couchdb.completedDb')
-const remoteServer = config.get('couchdb.remoteServer')
-const port = config.get('couchdb.port')
-
-cradle.setup({
-    host: remoteServer,
-    cache: true,
-    raw: false,
-    forceSave: true
-})
-const c = new (cradle.Connection)
-const completed = c.database(completedDb)
 let watchedDatabaseList = []
 
 // Get the collection of databases to watch
-let feed = completed.changes({
-    since: 0,
-    live: true,
-    include_docs: true
-});
-feed.on('change', (change) => {
-    processChange(change);
-});
+const start = (watchList) => {
+    let completedDb = new CouchService('completed-visits')
 
-// const makeCollection = (docs) => {
-//     let userDbList = []
-//     userDbList = docs.map(d => d.id)
-//     if (userDbList.length > 0) { start(userDbList) }
-// }
-//getUserDatabaseList(makeCollection)
+    completedDb.getUserDatabaseList()
+        .then(list => { console.log(list) })
+    
+    let watchedDB = new CouchService('userdb-626f62')
+    watchedDB.subscribe(processChange)
+    // const completedDatabase = new PouchService(completedDb, remoteServer)
+    // completedDatabase.sync()
 
-// const start = (watchList) => {
-//     const completedDatabase = new PouchService(completedDb, remoteServer)
-//     completedDatabase.sync()
+    // watchedDatabaseList = watchList.map(d => new PouchService(d, remoteServer))
+    // watchedDatabaseList.forEach(w => {
+    //     w.subscribe(processChange)
+    //     w.sync()
+    // })
 
-//     watchedDatabaseList = watchList.map(d => new PouchService(d, remoteServer))
-//     watchedDatabaseList.forEach(w => {
-//         w.subscribe(processChange)
-//         w.sync()
-//     })
+    console.log('MFA Processing Service Running...')
+}
 
-//     console.log('MFA Processing Service Running...')
-// }
+start()
 
 // Ignore deleted records
 const processChange = (change, db) => {
