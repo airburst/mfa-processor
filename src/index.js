@@ -2,52 +2,68 @@
 import { install } from 'source-map-support';
 install();
 const config = require('config');
-import { getUserDatabaseList } from './couchService'
-import PouchService from './pouchService'
+const cradle = require('cradle')
+// import { getUserDatabaseList } from './couchService'
 
 const user = config.get('couchdb.user')
 const pass = config.get('couchdb.password')
 const completedDb = config.get('couchdb.completedDb')
 const remoteServer = config.get('couchdb.remoteServer')
-//const remoteServerWithCreds = `http://${user}:${pass}@${remoteServer}`
+const port = config.get('couchdb.port')
+
+cradle.setup({
+    host: remoteServer,
+    cache: true,
+    raw: false,
+    forceSave: true
+})
+const c = new (cradle.Connection)
+const completed = c.database(completedDb)
 let watchedDatabaseList = []
 
 // Get the collection of databases to watch
-const makeCollection = (docs) => {
-    let userDbList = []
-    userDbList = docs.map(d => d.id)
-    if (userDbList.length > 0) { start(userDbList) }
-}
+let feed = completed.changes({
+    since: 0,
+    live: true,
+    include_docs: true
+});
+feed.on('change', (change) => {
+    processChange(change);
+});
 
-getUserDatabaseList(makeCollection)
+// const makeCollection = (docs) => {
+//     let userDbList = []
+//     userDbList = docs.map(d => d.id)
+//     if (userDbList.length > 0) { start(userDbList) }
+// }
+//getUserDatabaseList(makeCollection)
 
-const start = (watchList) => {
-    const completedDatabase = new PouchService(completedDb, remoteServer)
-    completedDatabase.sync()
-    
-    watchedDatabaseList = watchList.map(d => new PouchService(d, remoteServer))
-    watchedDatabaseList.forEach(w => {
-        w.subscribe(processChange)
-        w.sync()
-    })
+// const start = (watchList) => {
+//     const completedDatabase = new PouchService(completedDb, remoteServer)
+//     completedDatabase.sync()
 
-    console.log('MFA Processing Service Running...')
-}
+//     watchedDatabaseList = watchList.map(d => new PouchService(d, remoteServer))
+//     watchedDatabaseList.forEach(w => {
+//         w.subscribe(processChange)
+//         w.sync()
+//     })
+
+//     console.log('MFA Processing Service Running...')
+// }
 
 // Ignore deleted records
 const processChange = (change, db) => {
-    console.log('processing', change, db)       //
     if (change.doc && !change.doc._deleted) { testForCompleted(change.doc, db) }
 }
 
 // Filter completed records
 const testForCompleted = (doc, db) => {
-    if (doc.status && (doc.status === 'completed')) { moveRecord(doc, db) }
+    if (doc.status && (doc.status === 'completed')) { console.log('Will move:', JSON.stringify(doc))/*moveRecord(doc, db)*/ }
 }
 
 // Move record into completed queue
 const moveRecord = (doc, db) => {
-	let addDoc = Object.assign({}, doc, { _rev: undefined })
+    let addDoc = Object.assign({}, doc, { _rev: undefined })
     completedDatabase.add(addDoc)
         .then(removeIfNoError(doc._id, db))
         .catch(err => console.log('Error: Completed record could not be added: ', doc._id, ' : ', JSON.stringify(err)))
@@ -57,7 +73,7 @@ const moveRecord = (doc, db) => {
 const removeIfNoError = (id, db) => {
     index = watchedDatabaseList.indexOf(db)
     completedDatabase.fetch(id)
-        .then(doc => { 
+        .then(doc => {
             watchedDatabaseList[index].remove(doc._id)
                 .then(console.log('Assessment ' + doc._id + ' was completed at ' + new Date().toISOString()))
         })
