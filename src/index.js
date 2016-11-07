@@ -22,7 +22,8 @@ const testForCompleted = (doc) => {
 
 // Move record into completed queue
 const moveRecord = (doc) => {
-    completedDatabase.add(doc)
+	let addDoc = Object.assign({}, doc, { _rev: undefined })
+    completedDatabase.add(addDoc)
         .then(removeIfNoError(doc._id))
         .catch(err => console.log('Error: Completed record could not be added: ', doc._id, ' : ', JSON.stringify(err)))
 }

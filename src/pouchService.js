@@ -12,7 +12,6 @@ module.exports = class PouchService {
 
     makeDoc(doc) {
         const id = (doc._id && (doc._id !== "")) ? doc._id : new Date().toISOString()
-        // doc._rev = undefined
         return Object.assign({}, doc, { _id: id })
     }
 
@@ -49,7 +48,7 @@ module.exports = class PouchService {
         return new Promise((resolve, reject) => {
             if (!details._id) { reject({ err: 'No id provided - cannot complete update' })}
             this.db.get(details._id)
-                .then((doc) => { return this.db.put(details) })     // Test - removed makeDoc
+                .then((doc) => { return this.db.put(details) })
                 .then((result) => { resolve(result) })
                 .catch((err) => { reject(err) })
         })
