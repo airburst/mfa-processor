@@ -69,7 +69,7 @@ module.exports = class PouchService {
             live: true,
             include_docs: true
         })
-            .on('change', (change) => { handleUpdate(change) })
+            .on('change', (change) => { console.log(change); handleUpdate(change, this.localDb) })
             .on('complete', (info) => { console.log('Subscription ended', info) })
             .on('error', function (err) { console.log('Subscription error', err) })
         console.log('Subscribed to ' + this.localDb)
