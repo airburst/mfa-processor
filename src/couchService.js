@@ -1,12 +1,14 @@
-const config = require('config');
-var curl = require('curlrequest');
+const config = require('config')
+const EventEmitter = require('events')
+const curl = require('curlrequest')
+const request = require('request')
 import { hexEncode, hexDecode } from './hexEncoder'
 
 module.exports = class CouchService {
 
     constructor(dbName) {
         this.setConfig(dbName)
-        // this.initialise(dbName)
+        this.changes = new EventEmitter()
     }
 
     setConfig(dbName) {
@@ -18,11 +20,8 @@ module.exports = class CouchService {
         this.adminPort = config.get('couchdb.adminPort')
         this.remoteUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.port}/`
         this.adminUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.adminPort}/`
-    }
-
-    initialise(db) {
-        // this.c = new (cradle.Connection)
-        // this.database = this.c.database(db)
+        this.pollingInterval = parseInt(config.get('couchdb.pollingInterval'), 10) * 1000
+        this.seq = 0
     }
 
     getUserDatabaseList(handleResponse) {
@@ -42,15 +41,22 @@ module.exports = class CouchService {
 
     // remove() {}
 
-    // subscribe(changeHandler) {
-    //     let feed = this.database.changes({
-    //         since: 0,
-    //         live: true,
-    //         include_docs: true
-    //     });
-    //     feed.on('change', (change) => {
-    //         changeHandler(change, this.databaseName);
-    //     });
-    // }
+    subscribe(handleResponse, handleError) {
+        const pollRequest = () => {
+            let url = this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
+            console.log('Polling', this.databaseName)   //
+            curl.request(url, (err, data) => {
+                if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
+                let d = JSON.parse(data)
+                this.seq = d.last_seq
+                handleResponse(d.results.map(r => r.doc))
+            })
+        }
+        this.poll = setInterval(pollRequest, this.pollingInterval)
+    }   
+
+    unsubscribe() {
+        clearInterval(this.poll)
+    }
 
 }

@@ -14,41 +14,42 @@ completedDb.getUserDatabaseList()
         
 const start = (watchList) => {
     console.log('Create listeners for user databases:', watchList)
-    //let watchedDB = new CouchService('userdb-626f62')
-    //watchedDB.subscribe(processChange)
+
     // const completedDatabase = new PouchService(completedDb, remoteServer)
     // completedDatabase.sync()
 
-    // watchedDatabaseList = watchList.map(d => new PouchService(d, remoteServer))
-    // watchedDatabaseList.forEach(w => {
-    //     w.subscribe(processChange)
-    //     w.sync()
-    // })
+    watchList.forEach(d => {
+        watchedDatabaseList[d] = new CouchService(d)
+        watchedDatabaseList[d].subscribe(processChange, handleError)
+    })
 
     console.log('MFA Processing Service Running...')
 }
 
 // Ignore deleted records
-const processChange = (change, db) => {
-    if (change.doc && !change.doc._deleted) { testForCompleted(change.doc, db) }
+// change is always an array
+const processChange = (change) => {
+    change.forEach(c => {
+        if (!c._deleted) { testForCompleted(c) }
+    })
 }
 
 // Filter completed records
-const testForCompleted = (doc, db) => {
-    if (doc.status && (doc.status === 'completed')) { console.log('Will move:', JSON.stringify(doc))/*moveRecord(doc, db)*/ }
+const testForCompleted = (doc) => {
+    if (doc.status && (doc.status === 'completed')) { console.log('Will move:', JSON.stringify(doc))/*moveRecord(doc)*/ }
 }
 
 // Move record into completed queue
-const moveRecord = (doc, db) => {
+const moveRecord = (doc) => {
     let addDoc = Object.assign({}, doc, { _rev: undefined })
     completedDatabase.add(addDoc)
-        .then(removeIfNoError(doc._id, db))
+        .then(removeIfNoError(doc._id))
         .catch(err => console.log('Error: Completed record could not be added: ', doc._id, ' : ', JSON.stringify(err)))
 }
 
 // Ensure that record exists in completed database before removing
-const removeIfNoError = (id, db) => {
-    index = watchedDatabaseList.indexOf(db)
+const removeIfNoError = (id) => {
+    // index = watchedDatabaseList.indexOf(db)
     completedDatabase.fetch(id)
         .then(doc => {
             watchedDatabaseList[index].remove(doc._id)
@@ -56,3 +57,5 @@ const removeIfNoError = (id, db) => {
         })
         .catch(err => console.log('Error: Completed record could not be removed: ', id, ' : ', JSON.stringify(err)))
 }
+
+const handleError = (error) => { console.log(error) }
