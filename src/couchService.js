@@ -79,7 +79,7 @@ module.exports = class CouchService {
                     resolve(JSON.parse(data))
                 })
             })
-        })
+        }).catch(err => console.log('Fetch failed', err))
     }
 
     deleteDoc(doc) {
