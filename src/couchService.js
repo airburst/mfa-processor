@@ -64,16 +64,26 @@ module.exports = class CouchService {
         })
     }
 
-    remove(id) {
+    remove(doc) {
         const options = {
-            url: this.remoteUrl + this.databaseName + '/' + id,
-            method: 'DELETE'
+            url: this.remoteUrl + this.databaseName + '/' + doc.id,
+            method: 'PUT',
+            data: this.convertDoc(doc),
+            headers: { 'content-type': 'application/json' }
         }
         return new Promise((resolve, reject) => {
             curl.request(options, (err, data) => {
                 if (err) { reject(err) }
                 resolve(JSON.parse(data))
             })
+        })
+    }
+
+    convertDoc(doc) {
+        return JSON.stringify({
+            _id: doc.id,
+            _rev: doc.rev,
+            _deleted: true
         })
     }
 

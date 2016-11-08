@@ -14,14 +14,14 @@ completedDatabase.getUserDatabaseList()
 
 // TESTS
 const removeTest = (temp) => {
-    console.log('removing', temp.id)
-    completedDatabase.remove(temp.id)
+    console.log('removing', temp)
+    completedDatabase.remove(temp)
         .then(doc => console.log(doc))
         .catch(err => console.log(err))
 }
 
 completedDatabase.add({ _id: new Date().toISOString(), name: 'Test', status: 'open' })
-    .then(doc => { console.log(doc); removeTest(doc) })
+    .then(doc => { removeTest(doc) })
     .catch(err => console.log(err))
 
 // END TESTS
