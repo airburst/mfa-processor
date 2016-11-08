@@ -1,5 +1,6 @@
 const config = require('config');
-const cradle = require('cradle')
+//const request = require('request');
+var curl = require('curlrequest');
 const fetch = require('node-fetch');
 import { hexEncode, hexDecode } from './hexEncoder'
 
@@ -7,7 +8,7 @@ module.exports = class CouchService {
 
     constructor(dbName) {
         this.setConfig(dbName)
-        this.initialise(dbName)
+        // this.initialise(dbName)
     }
 
     setConfig(dbName) {
@@ -17,27 +18,24 @@ module.exports = class CouchService {
         this.remoteServer = config.get('couchdb.remoteServer')
         this.port = config.get('couchdb.port')
         this.adminPort = config.get('couchdb.adminPort')
-        this.userDbView = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.adminPort}/_dbs/_design/userDbList/_view/userDbView`
+        this.adminUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.adminPort}/`
     }
 
     initialise(db) {
-        cradle.setup({
-            host: this.remoteServer,
-            cache: true,
-            raw: false,
-            forceSave: true
-        })
-        this.c = new (cradle.Connection)
-        this.database = this.c.database(db)
+        // this.c = new (cradle.Connection)
+        // this.database = this.c.database(db)
     }
-    
+
     getUserDatabaseList(handleResponse) {
-        console.log(this.userDbView)
+        const url = this.adminUrl + '_dbs/_all_docs'
         return new Promise((resolve, reject) => {
-            fetch(this.userDbView, { method: 'get' })
-                .then(function (res) { return res.json() })
-                .then(function (doc) { resolve(doc.rows.map(d => d.id)) })
-                .catch(function (err) { reject(err) });
+            curl.request(url, (err, data) => {
+                if (err) { reject(err) }
+                resolve(JSON.parse(data).rows
+                    .map(d => d.id)
+                    .filter(a => a.indexOf('userdb') > -1)
+                )
+            })
         })
     }
 
@@ -45,15 +43,15 @@ module.exports = class CouchService {
 
     // remove() {}
 
-    subscribe(changeHandler) {
-        let feed = this.database.changes({
-            since: 0,
-            live: true,
-            include_docs: true
-        });
-        feed.on('change', (change) => {
-            changeHandler(change, this.databaseName);
-        });
-    }
-    
+    // subscribe(changeHandler) {
+    //     let feed = this.database.changes({
+    //         since: 0,
+    //         live: true,
+    //         include_docs: true
+    //     });
+    //     feed.on('change', (change) => {
+    //         changeHandler(change, this.databaseName);
+    //     });
+    // }
+
 }

@@ -9,12 +9,11 @@ let watchedDatabaseList = []
 // Get the collection of databases to watch
 const start = (watchList) => {
     let completedDb = new CouchService('completed-visits')
-
     completedDb.getUserDatabaseList()
         .then(list => { console.log(list) })
     
-    let watchedDB = new CouchService('userdb-626f62')
-    watchedDB.subscribe(processChange)
+    //let watchedDB = new CouchService('userdb-626f62')
+    //watchedDB.subscribe(processChange)
     // const completedDatabase = new PouchService(completedDb, remoteServer)
     // completedDatabase.sync()
 

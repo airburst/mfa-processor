@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "config": "^1.24.0",
-    "cradle": "^0.7.1",
+    "curlrequest": "^1.0.0",
     "node-fetch": "^1.6.3",
     "pouchdb": "^6.0.7",
     "source-map-support": "^0.4.0"
