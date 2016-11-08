@@ -24,7 +24,7 @@ module.exports = class CouchService {
         this.seq = 0
     }
 
-    getUserDatabaseList(handleResponse) {
+    getUserDatabaseList() {
         const url = this.adminUrl + '_dbs/_all_docs'
         return new Promise((resolve, reject) => {
             curl.request(url, (err, data) => {
@@ -64,25 +64,28 @@ module.exports = class CouchService {
         })
     }
 
-    remove(doc) {
-        const options = {
-            url: this.remoteUrl + this.databaseName + '/' + doc.id,
-            method: 'PUT',
-            data: this.convertDoc(doc),
-            headers: { 'content-type': 'application/json' }
-        }
-        return new Promise((resolve, reject) => {
-            curl.request(options, (err, data) => {
-                if (err) { reject(err) }
-                resolve(JSON.parse(data))
+    remove(id) {
+        this.fetch(id).then(doc => {
+            const options = {
+                url: this.remoteUrl + this.databaseName + '/' + id,
+                method: 'PUT',
+                data: this.deleteDoc(doc),
+                headers: { 'content-type': 'application/json' }
+            }
+            return new Promise((resolve, reject) => {
+                curl.request(options, (err, data) => {
+                    if (err) { reject(err) }
+                    console.log('Removing', id, 'from', this.databaseName)      //
+                    resolve(JSON.parse(data))
+                })
             })
         })
     }
 
-    convertDoc(doc) {
+    deleteDoc(doc) {
         return JSON.stringify({
-            _id: doc.id,
-            _rev: doc.rev,
+            _id: (doc._id) ? doc._id : doc.id,
+            _rev: (doc._rev) ? doc._rev : doc.rev,
             _deleted: true
         })
     }
@@ -95,7 +98,7 @@ module.exports = class CouchService {
                 if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
                 let d = JSON.parse(data)
                 this.seq = d.last_seq
-                handleResponse(d.results.map(r => r.doc))
+                handleResponse(d.results.map(r => r.doc), this.databaseName)
             })
         }
         this.poll = setInterval(pollRequest, this.pollingInterval)

@@ -12,20 +12,7 @@ completedDatabase.getUserDatabaseList()
     .then(list => { start(list) })
     .catch(err => console.log('Error: Unable to fetch list of user databases', err))
 
-// TESTS
-const removeTest = (temp) => {
-    console.log('removing', temp)
-    completedDatabase.remove(temp)
-        .then(doc => console.log(doc))
-        .catch(err => console.log(err))
-}
-
-completedDatabase.add({ _id: new Date().toISOString(), name: 'Test', status: 'open' })
-    .then(doc => { removeTest(doc) })
-    .catch(err => console.log(err))
-
-// END TESTS
-
+// Store userdb instances in collection e.g. watchedDataBaseList[ 'userdb-xxxxxx', ... ]
 const start = (watchList) => {
     watchList.forEach(d => {
         watchedDatabaseList[d] = new CouchService(d)
@@ -34,34 +21,38 @@ const start = (watchList) => {
     console.log('MFA Processing Service Running...')
 }
 
-// Ignore deleted records
-// change is always an array
-const processChange = (change) => {
+// Ignore deleted records; [change] is always an array; 
+// db is the database name, so we can remove doc later
+const processChange = (change, db) => {
     change.forEach(c => {
-        if (!c._deleted) { testForCompleted(c) }
+        if (!c._deleted) { testForCompleted(c, db) }
     })
 }
 
-// Filter completed records
-const testForCompleted = (doc) => {
-    if (doc.status && (doc.status === 'completed')) { console.log('Will move:', JSON.stringify(doc))/*moveRecord(doc)*/ }
+// Filter only completed records
+const testForCompleted = (doc, db) => {
+    if (doc.status && (doc.status === 'completed')) { moveRecord(doc, db) }
 }
 
 // Move record into completed queue
-const moveRecord = (doc) => {
+const moveRecord = (doc, db) => {
     completedDatabase.add(doc)
-        .then(removeIfNoError(doc.id))
-        .catch(err => console.log('Error: Completed record could not be added: ', doc.id, ' : ', JSON.stringify(err)))
+        .then(removeIfNoError(doc._id, db))
+        .catch(err => console.log('Error: Completed record could not be added: ', doc._id, ' : ', JSON.stringify(err)))
 }
 
 // Ensure that record exists in completed database before removing
-const removeIfNoError = (id) => {
+const removeIfNoError = (id, db) => {
     completedDatabase.fetch(id)
-        .then(doc => {
-            watchedDatabaseList['database'].remove(id)
-                .then(console.log('Assessment ' + id + ' was completed at ' + new Date().toISOString()))
-        })
-        .catch(err => console.log('Error: Completed record could not be removed: ', id, ' : ', JSON.stringify(err)))
+        .then(doc => { remove(id, db) })
+        .catch(err => console.log('Error: Completed record could not be found: ', doc._id, ' : ', JSON.stringify(err)))
+}
+
+const remove = (id, db) => {
+    watchedDatabaseList[db].remove(id)
+        .then(doc => console.log('resolved', doc))      // NOT RESOLVING
+        // .then(result => console.log('Assessment ' + id + ' was completed at ' + new Date().toISOString()))
+        .catch(err => console.log('Error: Completed record', id, 'could not be removed from', db, JSON.stringify(err)))
 }
 
 const handleError = (error) => { console.log(error) }
