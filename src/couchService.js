@@ -37,14 +37,50 @@ module.exports = class CouchService {
         })
     }
 
-    // add() {}
+    fetch(id) {
+        const url = this.remoteUrl + this.databaseName + '/' + id
+        return new Promise((resolve, reject) => {
+            curl.request(url, (err, data) => {
+                if (err) { reject(err) }
+                resolve(JSON.parse(data))
+            })
+        })
+    }
 
-    // remove() {}
+    add(doc) {
+        if (!doc._id) { doc._id = new Date().toISOString() }
+        doc._rev = undefined
+        const options = {
+            url: this.remoteUrl + this.databaseName + '/' + doc._id,
+            method: 'PUT',
+            data: JSON.stringify(doc),
+            headers: { 'content-type': 'application/json' }
+        }
+        return new Promise((resolve, reject) => {
+            curl.request(options, (err, data) => {
+                if (err) { reject(err) }
+                resolve(JSON.parse(data))
+            })
+        })
+    }
+
+    remove(id) {
+        const options = {
+            url: this.remoteUrl + this.databaseName + '/' + id,
+            method: 'DELETE'
+        }
+        return new Promise((resolve, reject) => {
+            curl.request(options, (err, data) => {
+                if (err) { reject(err) }
+                resolve(JSON.parse(data))
+            })
+        })
+    }
 
     subscribe(handleResponse, handleError) {
+        console.log('Subscribed to', this.databaseName)
         const pollRequest = () => {
             let url = this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
-            console.log('Polling', this.databaseName)   //
             curl.request(url, (err, data) => {
                 if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
                 let d = JSON.parse(data)
@@ -57,6 +93,7 @@ module.exports = class CouchService {
 
     unsubscribe() {
         clearInterval(this.poll)
+        console.log('Unsubscribed from', this.databaseName)
     }
 
 }
