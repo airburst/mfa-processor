@@ -1,7 +1,5 @@
 const config = require('config');
-//const request = require('request');
 var curl = require('curlrequest');
-const fetch = require('node-fetch');
 import { hexEncode, hexDecode } from './hexEncoder'
 
 module.exports = class CouchService {
@@ -18,6 +16,7 @@ module.exports = class CouchService {
         this.remoteServer = config.get('couchdb.remoteServer')
         this.port = config.get('couchdb.port')
         this.adminPort = config.get('couchdb.adminPort')
+        this.remoteUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.port}/`
         this.adminUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.adminPort}/`
     }
 

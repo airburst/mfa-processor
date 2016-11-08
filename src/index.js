@@ -7,11 +7,13 @@ import CouchService from './couchService'
 let watchedDatabaseList = []
 
 // Get the collection of databases to watch
+let completedDb = new CouchService('completed-visits')
+completedDb.getUserDatabaseList()
+    .then(list => { start(list) })
+    .catch(err => console.log('Error: Unable to fetch list of user databases', err))
+        
 const start = (watchList) => {
-    let completedDb = new CouchService('completed-visits')
-    completedDb.getUserDatabaseList()
-        .then(list => { console.log(list) })
-    
+    console.log('Create listeners for user databases:', watchList)
     //let watchedDB = new CouchService('userdb-626f62')
     //watchedDB.subscribe(processChange)
     // const completedDatabase = new PouchService(completedDb, remoteServer)
@@ -25,8 +27,6 @@ const start = (watchList) => {
 
     console.log('MFA Processing Service Running...')
 }
-
-start()
 
 // Ignore deleted records
 const processChange = (change, db) => {
