@@ -20,7 +20,7 @@ completedDatabase.getUserDatabaseList()
 const start = (watchList) => {
     watchList.forEach(d => {
         watchedDatabaseList[d] = new CouchService(d)
-        watchedDatabaseList[d].subscribe(processChange, handleError)
+        watchedDatabaseList[d].subscribe(processChange, generalError)
     })
     console.log('MFA Processing Service Running...')
 }
@@ -64,4 +64,4 @@ const remove = (id, db) => {
     watchedDatabaseList[db].remove(id, success, error)
 }
 
-const handleError = (err) => { console.log(err) }
+const generalError = (err) => { console.log(err) }
