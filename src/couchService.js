@@ -21,6 +21,7 @@ module.exports = class CouchService {
         this.remoteUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.port}/`
         this.adminUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.adminPort}/`
         this.pollingInterval = parseInt(config.get('couchdb.pollingInterval'), 10) * 1000
+        this.newUserPollingInterval = parseInt(config.get('couchdb.newUserPollingInterval'), 10) * 1000
         this.seq = 0
     }
 
@@ -37,17 +38,15 @@ module.exports = class CouchService {
         })
     }
 
-    fetch(id) {
+    fetch(id, handleSuccess, handleError) {
         const url = this.remoteUrl + this.databaseName + '/' + id
-        return new Promise((resolve, reject) => {
-            curl.request(url, (err, data) => {
-                if (err) { reject(err) }
-                resolve(JSON.parse(data))
-            })
+        curl.request(url, (err, data) => {
+            if (err) { handleError(err) }
+            handleSuccess(JSON.parse(data))
         })
     }
 
-    add(doc) {
+    add(doc, handleSuccess, handleError) {
         if (!doc._id) { doc._id = new Date().toISOString() }
         doc._rev = undefined
         const options = {
@@ -56,30 +55,27 @@ module.exports = class CouchService {
             data: JSON.stringify(doc),
             headers: { 'content-type': 'application/json' }
         }
-        return new Promise((resolve, reject) => {
-            curl.request(options, (err, data) => {
-                if (err) { reject(err) }
-                resolve(JSON.parse(data))
-            })
+        curl.request(options, (err, data) => {
+            if (err) { handleError(err) }
+            handleSuccess(JSON.parse(data))
         })
     }
 
-    remove(id) {
-        this.fetch(id).then(doc => {
+    remove(id, handleSuccess, handleError) {
+        const fetchSuccess = (doc) => {
             const options = {
                 url: this.remoteUrl + this.databaseName + '/' + id,
                 method: 'PUT',
                 data: this.deleteDoc(doc),
                 headers: { 'content-type': 'application/json' }
             }
-            return new Promise((resolve, reject) => {
-                curl.request(options, (err, data) => {
-                    if (err) { reject(err) }
-                    console.log('Removing', id, 'from', this.databaseName)      //
-                    resolve(JSON.parse(data))
-                })
+            curl.request(options, (err, data) => {
+                if (err) { handleError(err) }
+                handleSuccess(data)
             })
-        }).catch(err => console.log('Fetch failed', err))
+        }
+        const fetchError = (err) => { console.log(err => console.log('Fetch failed', err)) }
+        this.fetch(id, fetchSuccess, fetchError)
     }
 
     deleteDoc(doc) {
@@ -102,7 +98,7 @@ module.exports = class CouchService {
             })
         }
         this.poll = setInterval(pollRequest, this.pollingInterval)
-    }   
+    }
 
     unsubscribe() {
         clearInterval(this.poll)

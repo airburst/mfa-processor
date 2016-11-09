@@ -6,6 +6,10 @@ import CouchService from './couchService'
 
 let watchedDatabaseList = []
 
+process.on('unhandledRejection', (reason) => {
+	console.log('DEBUG: Unhandled Rejection Reason: ' + reason);
+});
+
 // Get the collection of databases to watch
 let completedDatabase = new CouchService('completed-visits')
 completedDatabase.getUserDatabaseList()
@@ -36,23 +40,28 @@ const testForCompleted = (doc, db) => {
 
 // Move record into completed queue
 const moveRecord = (doc, db) => {
-    completedDatabase.add(doc)
-        .then(removeIfNoError(doc._id, db))
-        .catch(err => console.log('Error: Completed record could not be added: ', doc._id, ' : ', JSON.stringify(err)))
+    const success = (doc) => {
+        // console.log('DEBUG: Added doc to completed-visits', doc)
+        removeIfNoError(doc.id, db)
+    }
+    const error = (err) => { console.log('Error: Completed record could not be added: ', doc._id, ' : ', JSON.stringify(err)) }
+    completedDatabase.add(doc, success, error)
 }
 
 // Ensure that record exists in completed database before removing
 const removeIfNoError = (id, db) => {
-    completedDatabase.fetch(id)
-        .then(doc => { remove(id, db) })
-        .catch(err => console.log('Error: Completed record could not be found: ', doc._id, ' : ', JSON.stringify(err)))
+    const success = (doc) => {
+        // console.log('DEBUG: Fetched doc from completed-visits', doc)
+        remove(id, db)
+    }
+    const error = (err) => { console.log('Error: Completed record could not be found: ', doc._id, ' : ', JSON.stringify(err)) }
+    completedDatabase.fetch(id, success, error)
 }
 
 const remove = (id, db) => {
-    watchedDatabaseList[db].remove(id)
-        .then(doc => console.log('resolved', doc))      // NOT RESOLVING
-        // .then(result => console.log('Assessment ' + id + ' was completed at ' + new Date().toISOString()))
-        .catch(err => console.log('Error: Completed record', id, 'could not be removed from', db, JSON.stringify(err)))
+    const success = (result) => { console.log('Assessment ' + id + ' was completed at ' + new Date().toISOString()) }
+    const error = (err) => { console.log('Error: Completed record', id, 'could not be removed from', db, JSON.stringify(err)) }
+    watchedDatabaseList[db].remove(id, success, error)
 }
 
-const handleError = (error) => { console.log(error) }
+const handleError = (err) => { console.log(err) }
