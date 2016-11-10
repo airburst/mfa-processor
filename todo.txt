@@ -1,0 +1,5 @@
+Create a docker image for this repo.
+
+If user accounts are deleted, potentially unsubscribe and remove from watch list.  Note that by default, userdb databases are NOT deleted when a user account is deleted, so this is not strictly necessary.
+
+May want to move completed items into a different queue or service, TBC.
