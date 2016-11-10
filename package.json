@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "babel src --out-dir dist --source-maps inline --watch",
     "build": "babel src --out-dir dist --source-maps inline",
-    "prepublish": "npm run build"
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
