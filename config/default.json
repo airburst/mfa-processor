@@ -1,0 +1,12 @@
+{
+    "couchdb": {
+        "remoteServer": "localhost",
+        "port": "5984",
+        "adminPort": "5986",
+        "user": "processor",
+        "password": "MFAProcessorApp",
+        "completedDb": "completed-visits",
+        "pollingInterval": 15,
+        "newUserPollingInterval": 60
+    }
+}
