@@ -45,9 +45,8 @@ const watchForNewUsers = () => {
 
 const checkNameAgainstWatchList = (name) => {
     let dbName = 'userdb-' + hexEncode(name)
-    console.log('DEBUG: test for watch on', dbName)
-    if (watchedDatabaseList.indexOf(dbName) === -1) {
-        addWatchToDatabase()
+    if (watchedDatabaseList[dbName] === undefined) {
+        addWatchToDatabase(dbName)
     }
 }
 
