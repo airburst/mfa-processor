@@ -3,11 +3,12 @@ import { install } from 'source-map-support';
 install();
 const config = require('config');
 import CouchService from './couchService'
+import { hexEncode, hexDecode } from './hexEncoder'
 
 let watchedDatabaseList = []
 
 process.on('unhandledRejection', (reason) => {
-	console.log('DEBUG: Unhandled Rejection Reason: ' + reason);
+    console.log('DEBUG: Unhandled Rejection Reason: ' + reason);
 });
 
 // Get the collection of databases to watch
@@ -18,11 +19,36 @@ completedDatabase.getUserDatabaseList()
 
 // Store userdb instances in collection e.g. watchedDataBaseList[ 'userdb-xxxxxx', ... ]
 const start = (watchList) => {
-    watchList.forEach(d => {
-        watchedDatabaseList[d] = new CouchService(d)
-        watchedDatabaseList[d].subscribe(processChange, generalError)
-    })
+    watchList.forEach(d => { addWatchToDatabase(d) })
+    watchForNewUsers()
     console.log('MFA Processing Service Running...')
+}
+
+const addWatchToDatabase = (d) => {
+    watchedDatabaseList[d] = new CouchService(d)
+    watchedDatabaseList[d].subscribe(processChange, generalError)
+}
+
+// Add newly created user dbs to the watch list
+const watchForNewUsers = () => {
+    const success = (change) => {
+        change.forEach(c => {
+            if (c._id.indexOf('org.couchdb.user') > -1) {
+                checkNameAgainstWatchList(c.name)
+            }
+        })
+    }
+    const error = (err) => { console.log('Error: Could not watch _users', JSON.stringify(err)) }
+    const users = new CouchService('_users')
+    users.subscribe(success, error, 'admin')
+}
+
+const checkNameAgainstWatchList = (name) => {
+    let dbName = 'userdb-' + hexEncode(name)
+    console.log('DEBUG: test for watch on', dbName)
+    if (watchedDatabaseList.indexOf(dbName) === -1) {
+        addWatchToDatabase()
+    }
 }
 
 // Ignore deleted records; [change] is always an array; 

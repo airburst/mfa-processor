@@ -94,10 +94,12 @@ module.exports = class CouchService {
         })
     }
 
-    subscribe(handleResponse, handleError) {
+    subscribe(handleResponse, handleError, admin) {
         console.log('Subscribed to', this.databaseName)
         const pollRequest = () => {
-            let url = this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
+            let url = (admin)
+                ? this.adminUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
+                : this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
             curl.request(url, (err, data) => {
                 if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
                 let d = JSON.parse(data)
