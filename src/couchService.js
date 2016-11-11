@@ -33,8 +33,7 @@ module.exports = class CouchService {
                 
 console.log('===========================================================')
 console.log(url)
-console.log('JSON.parse working:', JSON.parse({ name: 'Mark' }))
-console.log('data', data)
+console.log('data', JSON.stringify(data))
 console.log('===========================================================')
                 if (!data) { reject (data) }
                 resolve(JSON.parse(data).rows
