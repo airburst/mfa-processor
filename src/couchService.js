@@ -2,7 +2,16 @@ const config = require('config')
 const EventEmitter = require('events')
 const curl = require('curlrequest')
 const request = require('request')
+const buffer = require('buffer').Buffer
 import { hexEncode, hexDecode } from './hexEncoder'
+
+const btoa = (str) => {
+    return new Buffer(str).toString('base64');
+};
+
+const atob = (b64Encoded) => {
+    return new Buffer(b64Encoded, 'base64').toString();
+}
 
 module.exports = class CouchService {
 
@@ -23,24 +32,24 @@ module.exports = class CouchService {
         this.pollingInterval = parseInt(config.get('couchdb.pollingInterval'), 10) * 1000
         this.newUserPollingInterval = parseInt(config.get('couchdb.newUserPollingInterval'), 10) * 1000
         this.seq = 0
+        this.auth = 'Basic ' + btoa(this.user + ':' + this.pass)
     }
 
     getUserDatabaseList() {
         const url = this.adminUrl + '_dbs/_all_docs'
         return new Promise((resolve, reject) => {
-            curl.request(url, (err, data) => {
-                if (err) { reject(err) }
-                
-console.log('===========================================================')
-console.log(url)
-console.log('data', JSON.stringify(data))
-console.log('===========================================================')
-                if (!data) { reject (data) }
-                resolve(JSON.parse(data).rows
-                    .map(d => d.id)
-                    .filter(a => a.indexOf('userdb') > -1)
-                )
-            })
+            curl.request({
+                url: url,
+                headers: { authorization: this.auth }
+            },
+                (err, data) => {
+                    if (err) { reject(err) }
+                    if (!data || (data === "")) { reject(data) }
+                    resolve(JSON.parse(data).rows
+                        .map(d => d.id)
+                        .filter(a => a.indexOf('userdb') > -1)
+                    )
+                })
         })
     }
 
@@ -105,12 +114,15 @@ console.log('===========================================================')
             let url = (admin)
                 ? this.adminUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
                 : this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
-            curl.request(url, (err, data) => {
+            curl.request({
+                url: url,
+                headers: { authorization: this.auth }
+            }, (err, data) => {
                 if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
                 let d = JSON.parse(data)
                 this.seq = d.last_seq
-                if (d && d.results) { 
-                    handleResponse(d.results.map(r => r.doc), this.databaseName) 
+                if (d && d.results) {
+                    handleResponse(d.results.map(r => r.doc), this.databaseName)
                 } else {
                     handleError(data)
                 }

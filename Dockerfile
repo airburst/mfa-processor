@@ -4,6 +4,7 @@ FROM node:argon
 
 # Create app directory
 RUN mkdir -p /usr/app
+RUN mkdir -p /usr/app/logs
 WORKDIR /usr/app
 
 # Install app dependencies

@@ -1,6 +1,6 @@
 {
     "couchdb": {
-        "remoteServer": "0.0.0.0",
+        "remoteServer": "172.17.0.2",
         "port": "5984",
         "adminPort": "5984",
         "user": "processor",
