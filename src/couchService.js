@@ -112,8 +112,8 @@ module.exports = class CouchService {
     subscribe(handleResponse, handleError, admin) {
         const pollRequest = () => {
             let url = (admin)
-                ? this.adminUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
-                : this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
+                ? this.adminUrl + this.databaseName + '/_changes?since=' + this.seq
+                : this.remoteUrl + this.databaseName + '/_changes?since=' + this.seq
             curl.request({
                 url: url,
                 headers: { authorization: this.auth }
