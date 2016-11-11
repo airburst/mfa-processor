@@ -82,7 +82,7 @@ module.exports = class CouchService {
                 handleSuccess(data)
             })
         }
-        const fetchError = (err) => { console.log(err => console.log('Fetch failed', err)) }
+        const fetchError = (err) => { handleError(err) }
         this.fetch(id, fetchSuccess, fetchError)
     }
 
@@ -95,7 +95,6 @@ module.exports = class CouchService {
     }
 
     subscribe(handleResponse, handleError, admin) {
-        console.log('Subscribed to', this.databaseName)
         const pollRequest = () => {
             let url = (admin)
                 ? this.adminUrl + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
@@ -104,7 +103,11 @@ module.exports = class CouchService {
                 if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
                 let d = JSON.parse(data)
                 this.seq = d.last_seq
-                handleResponse(d.results.map(r => r.doc), this.databaseName)
+                if (d && d.results) { 
+                    handleResponse(d.results.map(r => r.doc), this.databaseName) 
+                } else {
+                    handleError(data)
+                }
             })
         }
         this.poll = setInterval(pollRequest, this.pollingInterval)
@@ -112,41 +115,16 @@ module.exports = class CouchService {
 
     unsubscribe() {
         clearInterval(this.poll)
-        console.log('Unsubscribed from', this.databaseName)
     }
 
     // TODO: refactor subscribe to use this function    
-    getChanges(start, handleResponse, handleError) {
-        let url = this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + start
-        curl.request(url, (err, data) => {
-            if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
-            let d = JSON.parse(data)
-            handleResponse(d.results.map(r => r.doc), this.databaseName, d.last_seq)
-        })
-    }
-
-    // purge(handleSuccess, handleError) {
-    //     const fetchSuccess = (data) => {
-    //         let purgeList = {}
-    //         let items = data
-    //             .filter(r => r._deleted)
-    //             .map(d => { purgeList[d._id] = [d._rev] })
-    //         console.log(purgeList)
-
-    //         const options = {
-    //             url: this.remoteUrl + this.databaseName + '/_purge',
-    //             method: 'POST',
-    //             data: data,
-    //             headers: { 'content-type': 'application/json' }
-    //         }
-
-    //         // curl.request(options, (err, data) => {
-    //         //     if (err) { handleError(err) }
-    //         //     handleSuccess(data)
-    //         // })
-    //     }
-    //     const fetchError = (err) => { console.log(err => console.log('Fetch failed', err)) }
-    //     this.getChanges(0, fetchSuccess, fetchError)
+    // getChanges(start, handleResponse, handleError) {
+    //     let url = this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + start
+    //     curl.request(url, (err, data) => {
+    //         if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
+    //         let d = JSON.parse(data)
+    //         handleResponse(d.results.map(r => r.doc), this.databaseName, d.last_seq)
+    //     })
     // }
 
 }

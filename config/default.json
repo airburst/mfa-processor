@@ -2,7 +2,7 @@
     "couchdb": {
         "remoteServer": "localhost",
         "port": "5984",
-        "adminPort": "5986",
+        "adminPort": "5984",
         "user": "processor",
         "password": "MFAProcessorApp",
         "completedDb": "completed-visits",
