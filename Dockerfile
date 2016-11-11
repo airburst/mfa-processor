@@ -13,8 +13,10 @@ RUN npm install
 # Bundle app source
 COPY . /usr/app
 
+# RUN npm run build
+
 # Make logfiles available outside container
 VOLUME  ["/usr/app/logs"]
 
 # EXPOSE 8080
-CMD [ "npm", "start" ]
+CMD [ "node", "/usr/app/dist/index.js" ]
