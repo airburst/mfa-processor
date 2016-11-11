@@ -18,8 +18,8 @@ module.exports = class CouchService {
         this.remoteServer = config.get('couchdb.remoteServer')
         this.port = config.get('couchdb.port')
         this.adminPort = config.get('couchdb.adminPort')
-        this.remoteUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.port}/`
-        this.adminUrl = `http://${this.user}:${this.pass}@${this.remoteServer}:${this.adminPort}/`
+        this.remoteUrl = `${this.user}:${this.pass}@${this.remoteServer}:${this.port}/`
+        this.adminUrl = `${this.user}:${this.pass}@${this.remoteServer}:${this.adminPort}/`
         this.pollingInterval = parseInt(config.get('couchdb.pollingInterval'), 10) * 1000
         this.newUserPollingInterval = parseInt(config.get('couchdb.newUserPollingInterval'), 10) * 1000
         this.seq = 0
@@ -30,6 +30,13 @@ module.exports = class CouchService {
         return new Promise((resolve, reject) => {
             curl.request(url, (err, data) => {
                 if (err) { reject(err) }
+                
+console.log('===========================================================')
+console.log(url)
+console.log('JSON.parse working:', JSON.parse({ name: 'Mark' }))
+console.log('data', data)
+console.log('===========================================================')
+                if (!data) { reject (data) }
                 resolve(JSON.parse(data).rows
                     .map(d => d.id)
                     .filter(a => a.indexOf('userdb') > -1)

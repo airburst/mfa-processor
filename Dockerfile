@@ -13,7 +13,8 @@ RUN npm install
 # Bundle app source
 COPY . /usr/app
 
-# RUN npm run build
+# Build the app
+RUN npm run build
 
 # Make logfiles available outside container
 VOLUME  ["/usr/app/logs"]
