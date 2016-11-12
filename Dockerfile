@@ -20,5 +20,5 @@ RUN npm run build
 # Make logfiles available outside container
 VOLUME  ["/usr/app/logs"]
 
-# EXPOSE 8080
+# EXPOSE 6000
 CMD [ "node", "/usr/app/dist/index.js" ]

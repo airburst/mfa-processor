@@ -1,7 +1,6 @@
 const config = require('config')
 const EventEmitter = require('events')
 const curl = require('curlrequest')
-const request = require('request')
 const buffer = require('buffer').Buffer
 import { hexEncode, hexDecode } from './hexEncoder'
 

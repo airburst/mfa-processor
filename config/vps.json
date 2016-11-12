@@ -6,6 +6,7 @@
         "password": "MFAProcessorApp",
         "completedDb": "completed-visits",
         "pollingInterval": 30,
-        "newUserPollingInterval": 60
+        "newUserPollingInterval": 60,
+        "restPort": 6000
     }
 }

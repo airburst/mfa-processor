@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-import { install } from 'source-map-support';
-install();
-const config = require('config');
+// import { install } from 'source-map-support';
+// install();
 const winston = require('winston')
 import CouchService from './couchService'
+//import RestService from './restService'
 import { hexEncode, hexDecode } from './hexEncoder'
 
-const now = () => { return new Date().toISOString() }
-const logFile = './logs/' + now() + '.log'
+// const restService = new RestService()
+const logFile = './logs/mfa-processor.log'
 
 // Set up logging transports
 const logger = new (winston.Logger)({
@@ -16,30 +16,31 @@ const logger = new (winston.Logger)({
         new (winston.transports.File)({ filename: logFile })
     ]
 })
-
 let watchedDatabaseList = []
 
 process.on('unhandledRejection', (reason) => {
-    logger.log('debug', now(), 'DEBUG: Unhandled Rejection Reason: %s', now(), reason);
+    logger.log('error', 'DEBUG: Unhandled Rejection Reason', reason);
 });
+logger.log('info', 'START')
 
 // Get the collection of databases to watch
 let completedDatabase = new CouchService('completed-visits')
 completedDatabase.getUserDatabaseList()
     .then(list => { start(list) })
-    .catch(err => logger.log('error', now(), 'Error: Unable to fetch list of user databases: %s', now(), err))
+    .catch(err => logger.log('error', 'Error: Unable to fetch list of user databases', err))
 
 // Store userdb instances in collection e.g. watchedDataBaseList[ 'userdb-xxxxxx', ... ]
 const start = (watchList) => {
     watchList.forEach(d => { addWatchToDatabase(d) })
     watchForNewUsers()
-    logger.log('info', now(), 'MFA Processing Service Running...')
+    logger.log('info', 'MFA Processing Service Running...')
+    // restService.start()
 }
 
 const addWatchToDatabase = (d) => {
     watchedDatabaseList[d] = new CouchService(d)
     watchedDatabaseList[d].subscribe(processChange, generalError)
-    logger.log('info', now(), 'Subscribed to', d)
+    logger.log('info', 'Subscribed to', d)
 }
 
 // Add newly created user dbs to the watch list
@@ -51,7 +52,7 @@ const watchForNewUsers = () => {
             }
         })
     }
-    const error = (err) => { logger.log('error', now(), 'Error: Could not watch _users: ', JSON.stringify(err)) }
+    const error = (err) => { logger.log('error', 'Error: Could not watch _users: ', JSON.stringify(err)) }
     const users = new CouchService('_users')
     users.subscribe(success, error, 'admin')
 }
@@ -82,7 +83,7 @@ const testForCompleted = (doc, db) => {
 const moveRecord = (doc, db) => {
     const success = (doc) => { removeIfNoError(doc.id, db) }
     const error = (err) => {
-        logger.log('error', now(), 'Completed record could not be added:', JSON.stringify(err))
+        logger.log('error', 'Completed record could not be added:', JSON.stringify(err))
     }
     completedDatabase.add(doc, success, error)
 }
@@ -91,19 +92,19 @@ const moveRecord = (doc, db) => {
 const removeIfNoError = (id, db) => {
     const success = (doc) => { remove(id, db) }
     const error = (err) => {
-        logger.log('error', now(), 'Completed record ' + id + ' could not be found:', JSON.stringify(err))
+        logger.log('error', 'Completed record ' + id + ' could not be found:', JSON.stringify(err))
     }
     completedDatabase.fetch(id, success, error)
 }
 
 const remove = (id, db) => {
     const success = (result) => {
-        logger.log('info', now(), 'Assessment [' + id + '] was completed')
+        logger.log('info', 'Assessment [' + id + '] was completed')
     }
     const error = (err) => {
-        logger.log('error', now(), 'Completed record [' + id + '] could not be removed from', db, JSON.stringify(err))
+        logger.log('error', 'Completed record [' + id + '] could not be removed from', db, JSON.stringify(err))
     }
     watchedDatabaseList[db].remove(id, success, error)
 }
 
-const generalError = (err) => { logger.log('error', now(), err) }
+const generalError = (err) => { logger.log('error', err) }
