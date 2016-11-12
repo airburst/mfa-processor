@@ -6,15 +6,16 @@ const winston = require('winston')
 import CouchService from './couchService'
 import { hexEncode, hexDecode } from './hexEncoder'
 
+const now = () => { return new Date().toISOString() }
+const logFile = './logs/' + now() + '.log'
+
 // Set up logging transports
 const logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: './logs/mfa-processor.log' })
+        new (winston.transports.File)({ filename: logFile })
     ]
-});
-
-const now = () => { return new Date().toISOString() }
+})
 
 let watchedDatabaseList = []
 
