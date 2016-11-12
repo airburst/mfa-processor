@@ -42,6 +42,9 @@ const addWatchToDatabase = (d) => {
 // Add newly created user dbs to the watch list
 const watchForNewUsers = () => {
     const success = (change) => {
+console.log('=================================================================')
+console.log(change)
+console.log('=================================================================')
         change.forEach(c => {
             if (c.id.indexOf('org.couchdb.user:') > -1) {
                 checkNameAgainstWatchList(c.id.replace('org.couchdb.user:', ''))

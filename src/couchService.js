@@ -109,8 +109,8 @@ module.exports = class CouchService {
     subscribe(handleResponse, handleError, admin) {
         const pollRequest = () => {
             let url = (admin)
-                ? this.adminUrl+ '/' + this.databaseName + '/_changes?since=' + this.seq
-                : this.remoteUrl+ '/' + this.databaseName + '/_changes?since=' + this.seq
+                ? this.adminUrl + '/' + this.databaseName + '/_changes?since=' + this.seq
+                : this.remoteUrl + '/' + this.databaseName + '/_changes?since=' + this.seq
             curl.request({
                 url: url,
                 headers: { authorization: this.auth }
@@ -119,7 +119,7 @@ module.exports = class CouchService {
                 let d = JSON.parse(data)
                 this.seq = d.last_seq
                 if (d && d.results) {
-                    handleResponse(d.results.map(r => r.doc), this.databaseName)
+                    handleResponse(d.results, this.databaseName)
                 } else {
                     handleError(data)
                 }

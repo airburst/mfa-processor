@@ -14,3 +14,10 @@ module.exports = {
     hexEncode: hexEncode,
     hexDecode: hexDecode
 }
+
+// es5 for browser
+// var hexEncode = function(text) {
+//     return text.split('').map(function(letter) {
+//         return letter.charCodeAt(0).toString(16)
+//     }).join('')
+// }
