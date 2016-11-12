@@ -5,7 +5,7 @@
         "user": "processor",
         "password": "MFAProcessorApp",
         "completedDb": "completed-visits",
-        "pollingInterval": 10,
-        "newUserPollingInterval": 30
+        "pollingInterval": 30,
+        "newUserPollingInterval": 60
     }
 }
