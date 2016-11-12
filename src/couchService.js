@@ -33,7 +33,7 @@ module.exports = class CouchService {
     }
 
     getUserDatabaseList() {
-        const url = this.adminUrl + '_dbs/_all_docs'
+        const url = this.adminUrl + '/_dbs/_all_docs'
         return new Promise((resolve, reject) => {
             curl.request({
                 url: url,
@@ -51,7 +51,7 @@ module.exports = class CouchService {
     }
 
     fetch(id, handleSuccess, handleError) {
-        const url = this.remoteUrl + this.databaseName + '/' + id
+        const url = `${this.remoteUrl}/${this.databaseName}/id`
         curl.request(url, (err, data) => {
             if (err) { handleError(err) }
             handleSuccess(JSON.parse(data))
@@ -59,7 +59,7 @@ module.exports = class CouchService {
     }
 
     fetchAll(handleSuccess, handleError) {
-        const url = this.remoteUrl + this.databaseName + '/_all_docs'
+        const url = `${this.remoteUrl}/${this.databaseName}/_all_docs`
         curl.request(url, (err, data) => {
             if (err) { handleError(err) }
             handleSuccess(JSON.parse(data))
@@ -70,7 +70,7 @@ module.exports = class CouchService {
         if (!doc._id) { doc._id = new Date().toISOString() }
         doc._rev = undefined
         const options = {
-            url: this.remoteUrl + this.databaseName + '/' + doc._id,
+            url: `${this.remoteUrl}/${this.databaseName}/doc._id`,
             method: 'PUT',
             data: JSON.stringify(doc),
             headers: { 'content-type': 'application/json' }
@@ -84,7 +84,7 @@ module.exports = class CouchService {
     remove(id, handleSuccess, handleError) {
         const fetchSuccess = (doc) => {
             const options = {
-                url: this.remoteUrl + this.databaseName + '/' + id,
+                url: `${this.remoteUrl}/${this.databaseName}/id`,
                 method: 'PUT',
                 data: this.deleteDoc(doc),
                 headers: { 'content-type': 'application/json' }
@@ -109,8 +109,8 @@ module.exports = class CouchService {
     subscribe(handleResponse, handleError, admin) {
         const pollRequest = () => {
             let url = (admin)
-                ? this.adminUrl + this.databaseName + '/_changes?since=' + this.seq
-                : this.remoteUrl + this.databaseName + '/_changes?since=' + this.seq
+                ? this.adminUrl+ '/' + this.databaseName + '/_changes?since=' + this.seq
+                : this.remoteUrl+ '/' + this.databaseName + '/_changes?since=' + this.seq
             curl.request({
                 url: url,
                 headers: { authorization: this.auth }
