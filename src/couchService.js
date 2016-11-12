@@ -32,7 +32,7 @@ module.exports = class CouchService {
     }
 
     getUserDatabaseList() {
-        const url = this.adminUrl + '/_dbs/_all_docs'
+        const url = this.user + ':' + this.pass + '@' + this.adminUrl + '/_dbs/_all_docs'
         return new Promise((resolve, reject) => {
             curl.request({
                 url: url,
@@ -51,7 +51,7 @@ module.exports = class CouchService {
 
     fetch(id, handleSuccess, handleError) {
         const options = {
-            url: this.remoteUrl + '/' + this.databaseName + '/' + id,
+            url: this.user + ':' + this.pass + '@' + this.remoteUrl + '/' + this.databaseName + '/' + id,
             headers: { authorization: this.auth }
         }
         curl.request(options, (err, data) => {
@@ -62,7 +62,7 @@ module.exports = class CouchService {
 
     fetchAll(handleSuccess, handleError) {
         const options = {
-            url: this.remoteUrl + '/' + this.databaseName + '/_all_docs',
+            url: this.user + ':' + this.pass + '@' + this.remoteUrl + '/' + this.databaseName + '/_all_docs',
             headers: { authorization: this.auth }
         }
         curl.request(options, (err, data) => {
@@ -75,7 +75,7 @@ module.exports = class CouchService {
         if (!doc._id) { doc._id = new Date().toISOString() }
         doc._rev = undefined
         const options = {
-            url: this.remoteUrl + '/' + this.databaseName + '/' + doc._id,
+            url: this.user + ':' + this.pass + '@' + this.remoteUrl + '/' + this.databaseName + '/' + doc._id,
             method: 'PUT',
             data: JSON.stringify(doc),
             headers: {
@@ -96,7 +96,7 @@ module.exports = class CouchService {
     remove(id, handleSuccess, handleError) {
         const fetchSuccess = (doc) => {
             const options = {
-                url: this.remoteUrl + '/' + this.databaseName + '/' + id,
+                url: this.user + ':' + this.pass + '@' + this.remoteUrl + '/' + this.databaseName + '/' + id,
                 method: 'PUT',
                 data: this.deleteDoc(doc),
                 headers: {
@@ -125,8 +125,8 @@ module.exports = class CouchService {
         const pollRequest = () => {
             let includeDocs = (admin) ? false : true
             let url = (includeDocs)
-                ? this.remoteUrl + '/' + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
-                : this.adminUrl + '/' + this.databaseName + '/_changes?since=' + this.seq
+                ? this.user + ':' + this.pass + '@' + this.remoteUrl + '/' + this.databaseName + '/_changes?include_docs=true&since=' + this.seq
+                : this.user + ':' + this.pass + '@' + this.adminUrl + '/' + this.databaseName + '/_changes?since=' + this.seq
             curl.request({
                 url: url,
                 headers: { authorization: this.auth }
