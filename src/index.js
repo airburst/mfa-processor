@@ -43,8 +43,8 @@ const addWatchToDatabase = (d) => {
 const watchForNewUsers = () => {
     const success = (change) => {
         change.forEach(c => {
-            if (c._id.indexOf('org.couchdb.user') > -1) {
-                checkNameAgainstWatchList(c.name)
+            if (c.id.indexOf('org.couchdb.user:') > -1) {
+                checkNameAgainstWatchList(c.id.replace('org.couchdb.user:', ''))
             }
         })
     }
