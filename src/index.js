@@ -19,26 +19,26 @@ const now = () => { return new Date().toISOString() }
 let watchedDatabaseList = []
 
 process.on('unhandledRejection', (reason) => {
-    logger.log('debug', '[%s] DEBUG: Unhandled Rejection Reason: %s', now(), reason);
+    logger.log('debug', now(), 'DEBUG: Unhandled Rejection Reason: %s', now(), reason);
 });
 
 // Get the collection of databases to watch
 let completedDatabase = new CouchService('completed-visits')
 completedDatabase.getUserDatabaseList()
     .then(list => { start(list) })
-    .catch(err => logger.log('error', '[%s] Error: Unable to fetch list of user databases: %s', now(), err))
+    .catch(err => logger.log('error', now(), 'Error: Unable to fetch list of user databases: %s', now(), err))
 
 // Store userdb instances in collection e.g. watchedDataBaseList[ 'userdb-xxxxxx', ... ]
 const start = (watchList) => {
     watchList.forEach(d => { addWatchToDatabase(d) })
     watchForNewUsers()
-    logger.log('info', '[%s] MFA Processing Service Running...', now())
+    logger.log('info', now(), 'MFA Processing Service Running...')
 }
 
 const addWatchToDatabase = (d) => {
     watchedDatabaseList[d] = new CouchService(d)
     watchedDatabaseList[d].subscribe(processChange, generalError)
-    logger.log('info', '[%s] Subscribed to %s', now(), d)
+    logger.log('info', now(), 'Subscribed to', d)
 }
 
 // Add newly created user dbs to the watch list
@@ -50,7 +50,7 @@ const watchForNewUsers = () => {
             }
         })
     }
-    const error = (err) => { logger.log('error', '[%s] Error: Could not watch _users: %s', now(), JSON.stringify(err)) }
+    const error = (err) => { logger.log('error', now(), 'Error: Could not watch _users: ', JSON.stringify(err)) }
     const users = new CouchService('_users')
     users.subscribe(success, error, 'admin')
 }
@@ -79,28 +79,30 @@ const testForCompleted = (doc, db) => {
 
 // Move record into completed queue
 const moveRecord = (doc, db) => {
-    const success = (doc) => {
-        logger.log('debug', '[%s] DEBUG: Added doc to completed-visits: %s', now(), doc)      //
-        removeIfNoError(doc.id, db)
+    const success = (doc) => { removeIfNoError(doc.id, db) }
+    const error = (err) => {
+        logger.log('error', now(), 'Completed record could not be added:', JSON.stringify(err))
     }
-    const error = (err) => { logger.log(now(), 'error', 'Error: Completed record could not be added: ', doc._id, ' : ', JSON.stringify(err)) }
     completedDatabase.add(doc, success, error)
 }
 
 // Ensure that record exists in completed database before removing
 const removeIfNoError = (id, db) => {
-    const success = (doc) => {
-        logger.log('debug', '[%s] DEBUG: Fetched doc from completed-visits: %s', now(), doc)     //
-        remove(id, db)
+    const success = (doc) => { remove(id, db) }
+    const error = (err) => {
+        logger.log('error', now(), 'Completed record ' + id + ' could not be found:', JSON.stringify(err))
     }
-    const error = (err) => { logger.log('error', '[%s] Error: Completed record [%s] could not be found: %s', now(), doc._id, JSON.stringify(err)) }
     completedDatabase.fetch(id, success, error)
 }
 
 const remove = (id, db) => {
-    const success = (result) => { logger.log('info', '[%s] Assessment [%s] was completed', now(), id) }
-    const error = (err) => { logger.log('error', '[%s] Error: Completed record [%s] could not be removed from %s: %s', now(), id, db, JSON.stringify(err)) }
+    const success = (result) => {
+        logger.log('info', now(), 'Assessment [' + id + '] was completed')
+    }
+    const error = (err) => {
+        logger.log('error', now(), 'Completed record [' + id + '] could not be removed from', db, JSON.stringify(err))
+    }
     watchedDatabaseList[db].remove(id, success, error)
 }
 
-const generalError = (err) => { logger.log('[%s] Error: %s', now(), err) }
+const generalError = (err) => { logger.log('error', now(), err) }

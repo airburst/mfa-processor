@@ -51,16 +51,22 @@ module.exports = class CouchService {
     }
 
     fetch(id, handleSuccess, handleError) {
-        const url = `${this.remoteUrl}/${this.databaseName}/id`
-        curl.request(url, (err, data) => {
+        const options = {
+            url: this.remoteUrl + '/' + this.databaseName + '/' + id,
+            headers: { authorization: this.auth }
+        }
+        curl.request(options, (err, data) => {
             if (err) { handleError(err) }
             handleSuccess(JSON.parse(data))
         })
     }
 
     fetchAll(handleSuccess, handleError) {
-        const url = `${this.remoteUrl}/${this.databaseName}/_all_docs`
-        curl.request(url, (err, data) => {
+        const options = {
+            url: this.remoteUrl + '/' + this.databaseName + '/_all_docs',
+            headers: { authorization: this.auth }
+        }
+        curl.request(options, (err, data) => {
             if (err) { handleError(err) }
             handleSuccess(JSON.parse(data))
         })
@@ -70,24 +76,34 @@ module.exports = class CouchService {
         if (!doc._id) { doc._id = new Date().toISOString() }
         doc._rev = undefined
         const options = {
-            url: `${this.remoteUrl}/${this.databaseName}/doc._id`,
+            url: this.remoteUrl + '/' + this.databaseName + '/' + doc._id,
             method: 'PUT',
             data: JSON.stringify(doc),
-            headers: { 'content-type': 'application/json' }
+            headers: {
+                'content-type': 'application/json',
+                authorization: this.auth
+            }
         }
         curl.request(options, (err, data) => {
             if (err) { handleError(err) }
-            handleSuccess(JSON.parse(data))
+            if (JSON.parse(data).error) {
+                handleError(data)
+            } else {
+                handleSuccess(JSON.parse(data))
+            }
         })
     }
 
     remove(id, handleSuccess, handleError) {
         const fetchSuccess = (doc) => {
             const options = {
-                url: `${this.remoteUrl}/${this.databaseName}/id`,
+                url: this.remoteUrl + '/' + this.databaseName + '/' + id,
                 method: 'PUT',
                 data: this.deleteDoc(doc),
-                headers: { 'content-type': 'application/json' }
+                headers: {
+                    'content-type': 'application/json',
+                    authorization: this.auth
+                }
             }
             curl.request(options, (err, data) => {
                 if (err) { handleError(err) }
@@ -116,13 +132,13 @@ module.exports = class CouchService {
                 url: url,
                 headers: { authorization: this.auth }
             }, (err, data) => {
-                if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
+                if (err) { handleError('Problem with changes feed on' + this.databaseName + ':' + JSON.stringify(err)) }
                 let d = JSON.parse(data)
                 this.seq = d.last_seq
                 if (d && d.results) {
                     // Map docs if we incuded docs in query
                     if (includeDocs) { handleResponse(d.results.map(r => r.doc), this.databaseName) }
-                    handleResponse(d.results, this.databaseName)
+                    if (!includeDocs) { handleResponse(d.results, this.databaseName) }
                 } else {
                     handleError(data)
                 }
@@ -134,15 +150,5 @@ module.exports = class CouchService {
     unsubscribe() {
         clearInterval(this.poll)
     }
-
-    // TODO: refactor subscribe to use this function    
-    // getChanges(start, handleResponse, handleError) {
-    //     let url = this.remoteUrl + this.databaseName + '/_changes?include_docs=true&since=' + start
-    //     curl.request(url, (err, data) => {
-    //         if (err) { handleError('Problem with changes feed on', this.databaseName, ':', err) }
-    //         let d = JSON.parse(data)
-    //         handleResponse(d.results.map(r => r.doc), this.databaseName, d.last_seq)
-    //     })
-    // }
 
 }

@@ -1,0 +1,81 @@
+{"level":"info","message":"2016-11-12T15:35:41.323Z Subscribed to %s userdb-626f62","timestamp":"2016-11-12T15:35:41.323Z"}
+{"level":"info","message":"2016-11-12T15:35:41.323Z Subscribed to %s userdb-746f6279","timestamp":"2016-11-12T15:35:41.323Z"}
+{"level":"info","message":"[2016-11-12T15:35:41.323Z] MFA Processing Service Running...","timestamp":"2016-11-12T15:35:41.323Z"}
+{"level":"info","message":"2016-11-12T15:39:29.947Z Subscribed to %s userdb-626f62","timestamp":"2016-11-12T15:39:29.955Z"}
+{"level":"info","message":"2016-11-12T15:39:29.957Z Subscribed to %s userdb-746f6279","timestamp":"2016-11-12T15:39:29.958Z"}
+{"level":"info","message":"2016-11-12T15:39:29.958Z MFA Processing Service Running... 2016-11-12T15:39:29.958Z","timestamp":"2016-11-12T15:39:29.958Z"}
+{"level":"info","message":"2016-11-12T15:43:33.006Z Subscribed to userdb-626f62","timestamp":"2016-11-12T15:43:33.015Z"}
+{"level":"info","message":"2016-11-12T15:43:33.018Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T15:43:33.018Z"}
+{"level":"info","message":"2016-11-12T15:43:33.018Z MFA Processing Service Running... 2016-11-12T15:43:33.018Z","timestamp":"2016-11-12T15:43:33.018Z"}
+{"level":"info","message":"2016-11-12T15:44:13.272Z Assessment [undefined] was completed","timestamp":"2016-11-12T15:44:13.272Z"}
+{"level":"info","message":"2016-11-12T15:50:39.127Z Subscribed to userdb-626f62","timestamp":"2016-11-12T15:50:39.135Z"}
+{"level":"info","message":"2016-11-12T15:50:39.139Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T15:50:39.139Z"}
+{"level":"info","message":"2016-11-12T15:50:39.142Z MFA Processing Service Running...","timestamp":"2016-11-12T15:50:39.142Z"}
+{"level":"info","message":"2016-11-12T15:53:10.331Z Subscribed to userdb-626f62","timestamp":"2016-11-12T15:53:10.339Z"}
+{"level":"info","message":"2016-11-12T15:53:10.339Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T15:53:10.339Z"}
+{"level":"info","message":"2016-11-12T15:53:10.343Z MFA Processing Service Running...","timestamp":"2016-11-12T15:53:10.343Z"}
+{"level":"info","message":"2016-11-12T15:55:56.166Z Subscribed to userdb-626f62","timestamp":"2016-11-12T15:55:56.183Z"}
+{"level":"info","message":"2016-11-12T15:55:56.185Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T15:55:56.186Z"}
+{"level":"info","message":"2016-11-12T15:55:56.187Z MFA Processing Service Running...","timestamp":"2016-11-12T15:55:56.187Z"}
+{"level":"info","message":"2016-11-12T15:58:11.095Z Subscribed to userdb-626f62","timestamp":"2016-11-12T15:58:11.103Z"}
+{"level":"info","message":"2016-11-12T15:58:11.107Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T15:58:11.107Z"}
+{"level":"info","message":"2016-11-12T15:58:11.107Z MFA Processing Service Running...","timestamp":"2016-11-12T15:58:11.107Z"}
+{"level":"info","message":"2016-11-12T15:58:51.350Z Assessment [undefined] was completed","timestamp":"2016-11-12T15:58:51.351Z"}
+{"level":"info","message":"2016-11-12T16:00:03.065Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:00:03.069Z"}
+{"level":"info","message":"2016-11-12T16:00:03.069Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:00:03.069Z"}
+{"level":"info","message":"2016-11-12T16:00:03.069Z MFA Processing Service Running...","timestamp":"2016-11-12T16:00:03.069Z"}
+{"level":"info","message":"2016-11-12T16:00:13.308Z Assessment [undefined] was completed","timestamp":"2016-11-12T16:00:13.312Z"}
+{"level":"info","message":"2016-11-12T16:00:45.489Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:00:45.497Z"}
+{"level":"info","message":"2016-11-12T16:00:45.501Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:00:45.501Z"}
+{"level":"info","message":"2016-11-12T16:00:45.501Z MFA Processing Service Running...","timestamp":"2016-11-12T16:00:45.501Z"}
+{"level":"info","message":"2016-11-12T16:03:00.322Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:03:00.323Z"}
+{"level":"info","message":"2016-11-12T16:03:00.323Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:03:00.327Z"}
+{"level":"info","message":"2016-11-12T16:03:00.327Z MFA Processing Service Running...","timestamp":"2016-11-12T16:03:00.327Z"}
+{"level":"info","message":"2016-11-12T16:03:50.671Z Assessment [undefined] was completed","timestamp":"2016-11-12T16:03:50.671Z"}
+{"level":"info","message":"2016-11-12T16:09:41.256Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:09:41.260Z"}
+{"level":"info","message":"2016-11-12T16:09:41.264Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:09:41.264Z"}
+{"level":"info","message":"2016-11-12T16:09:41.264Z MFA Processing Service Running...","timestamp":"2016-11-12T16:09:41.264Z"}
+{"level":"info","message":"2016-11-12T16:09:51.509Z Assessment [undefined] was completed","timestamp":"2016-11-12T16:09:51.509Z"}
+{"level":"info","message":"2016-11-12T16:12:05.290Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:12:05.294Z"}
+{"level":"info","message":"2016-11-12T16:12:05.294Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:12:05.294Z"}
+{"level":"info","message":"2016-11-12T16:12:05.294Z MFA Processing Service Running...","timestamp":"2016-11-12T16:12:05.294Z"}
+{"level":"info","message":"2016-11-12T16:12:25.507Z Assessment [undefined] was completed","timestamp":"2016-11-12T16:12:25.508Z"}
+{"level":"info","message":"2016-11-12T16:13:13.509Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:13:13.516Z"}
+{"level":"info","message":"2016-11-12T16:13:13.521Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:13:13.521Z"}
+{"level":"info","message":"2016-11-12T16:13:13.521Z MFA Processing Service Running...","timestamp":"2016-11-12T16:13:13.521Z"}
+{"level":"info","message":"2016-11-12T16:13:23.768Z Assessment [doc._id] was completed","timestamp":"2016-11-12T16:13:23.768Z"}
+{"level":"info","message":"2016-11-12T16:17:13.615Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:17:13.622Z"}
+{"level":"info","message":"2016-11-12T16:17:13.626Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:17:13.626Z"}
+{"level":"info","message":"2016-11-12T16:17:13.626Z MFA Processing Service Running...","timestamp":"2016-11-12T16:17:13.626Z"}
+{"level":"info","message":"2016-11-12T16:17:23.835Z Assessment [2016-11-12T16:09:51.394Z] was completed","timestamp":"2016-11-12T16:17:23.835Z"}
+{"level":"info","message":"2016-11-12T16:19:26.097Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:19:26.102Z"}
+{"level":"info","message":"2016-11-12T16:19:26.104Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:19:26.105Z"}
+{"level":"info","message":"2016-11-12T16:19:26.105Z MFA Processing Service Running...","timestamp":"2016-11-12T16:19:26.105Z"}
+{"level":"info","message":"2016-11-12T16:19:36.344Z Assessment [2016-11-12T16:09:51.394Z] was completed","timestamp":"2016-11-12T16:19:36.344Z"}
+{"level":"info","message":"2016-11-12T16:21:34.930Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:21:34.935Z"}
+{"level":"info","message":"2016-11-12T16:21:34.937Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:21:34.938Z"}
+{"level":"info","message":"2016-11-12T16:21:34.938Z MFA Processing Service Running...","timestamp":"2016-11-12T16:21:34.938Z"}
+{"level":"info","message":"2016-11-12T16:21:45.186Z Assessment [2016-11-12T16:09:51.394Z] was completed","timestamp":"2016-11-12T16:21:45.186Z"}
+{"level":"info","message":"2016-11-12T16:27:27.751Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:27:27.754Z"}
+{"level":"info","message":"2016-11-12T16:27:27.755Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:27:27.756Z"}
+{"level":"info","message":"2016-11-12T16:27:27.756Z MFA Processing Service Running...","timestamp":"2016-11-12T16:27:27.756Z"}
+{"level":"info","message":"2016-11-12T16:27:37.999Z Assessment [2016-11-12T16:09:51.394Z] was completed","timestamp":"2016-11-12T16:27:37.999Z"}
+{"level":"info","message":"2016-11-12T16:31:24.171Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:31:24.184Z"}
+{"level":"info","message":"2016-11-12T16:31:24.187Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:31:24.187Z"}
+{"level":"info","message":"2016-11-12T16:31:24.188Z MFA Processing Service Running...","timestamp":"2016-11-12T16:31:24.188Z"}
+{"level":"info","message":"2016-11-12T16:31:34.433Z Assessment [2016-11-12T16:09:51.394Z] was completed","timestamp":"2016-11-12T16:31:34.433Z"}
+{"level":"info","message":"2016-11-12T16:34:21.956Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:34:21.959Z"}
+{"level":"info","message":"2016-11-12T16:34:21.961Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:34:21.961Z"}
+{"level":"info","message":"2016-11-12T16:34:21.961Z MFA Processing Service Running...","timestamp":"2016-11-12T16:34:21.961Z"}
+{"level":"error","message":"2016-11-12T16:34:32.071Z Completed record could not be added: undefined \"{\\\"error\\\":\\\"conflict\\\",\\\"reason\\\":\\\"Document update conflict.\\\"}\\n\"","timestamp":"2016-11-12T16:34:32.071Z"}
+{"level":"info","message":"2016-11-12T16:34:32.281Z Assessment [undefined] was completed","timestamp":"2016-11-12T16:34:32.281Z"}
+{"level":"info","message":"2016-11-12T16:37:03.477Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:37:03.485Z"}
+{"level":"info","message":"2016-11-12T16:37:03.487Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:37:03.488Z"}
+{"level":"info","message":"2016-11-12T16:37:03.488Z MFA Processing Service Running...","timestamp":"2016-11-12T16:37:03.488Z"}
+{"level":"error","message":"2016-11-12T16:37:13.595Z Completed record could not be added: undefined \"{\\\"error\\\":\\\"conflict\\\",\\\"reason\\\":\\\"Document update conflict.\\\"}\\n\"","timestamp":"2016-11-12T16:37:13.596Z"}
+{"level":"info","message":"2016-11-12T16:37:13.749Z Assessment [undefined] was completed","timestamp":"2016-11-12T16:37:13.749Z"}
+{"level":"info","message":"2016-11-12T16:40:02.974Z Subscribed to userdb-626f62","timestamp":"2016-11-12T16:40:02.990Z"}
+{"level":"info","message":"2016-11-12T16:40:02.990Z Subscribed to userdb-746f6279","timestamp":"2016-11-12T16:40:02.990Z"}
+{"level":"info","message":"2016-11-12T16:40:02.990Z MFA Processing Service Running...","timestamp":"2016-11-12T16:40:02.990Z"}
+{"level":"error","message":"2016-11-12T16:40:13.100Z Completed record could not be added: \"{\\\"error\\\":\\\"conflict\\\",\\\"reason\\\":\\\"Document update conflict.\\\"}\\n\"","timestamp":"2016-11-12T16:40:13.100Z"}
+{"level":"info","message":"2016-11-12T16:41:23.328Z Assessment [2016-11-12T16:09:51.394Z] was completed","timestamp":"2016-11-12T16:41:23.329Z"}
