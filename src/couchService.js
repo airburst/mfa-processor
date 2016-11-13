@@ -38,14 +38,16 @@ module.exports = class CouchService {
                 url: url,
                 headers: { authorization: this.auth }
             },
-                (err, data) => {
+                (err, data) => {                   
                     if (err) { reject(err) }
-                    if (!data || (data === "")) { reject(data) }
-console.log(data)   //
-                    resolve(JSON.parse(data).rows
-                        .map(d => d.id)
-                        .filter(a => a.indexOf('userdb') > -1)
-                    )
+                    if (!data || (data === "")) {
+                        reject(data)
+                    } else {
+                        resolve(JSON.parse(data).rows
+                            .map(d => d.id)
+                            .filter(a => a.indexOf('userdb') > -1)
+                        )
+                    }
                 })
         })
     }

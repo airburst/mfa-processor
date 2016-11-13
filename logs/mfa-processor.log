@@ -1,0 +1,10 @@
+{"level":"info","message":"START","timestamp":"2016-11-13T21:52:42.012Z"}
+{"level":"info","message":"START","timestamp":"2016-11-13T21:54:42.195Z"}
+{"level":"error","message":"Error: Unable to fetch list of user databases Couldn't resolve host. The given remote host was not resolved.","timestamp":"2016-11-13T21:54:49.018Z"}
+{"level":"info","message":"START","timestamp":"2016-11-13T21:56:36.607Z"}
+{"level":"error","message":"Error: Unable to fetch list of user databases Couldn't resolve host. The given remote host was not resolved.","timestamp":"2016-11-13T21:56:43.426Z"}
+{"level":"info","message":"START","timestamp":"2016-11-13T21:58:01.826Z"}
+{"level":"error","message":"Error: Unable to fetch list of user databases Failed to connect to host.","timestamp":"2016-11-13T21:58:23.103Z"}
+{"level":"info","message":"START","timestamp":"2016-11-13T21:58:59.349Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-13T21:58:59.498Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-13T21:58:59.500Z"}
