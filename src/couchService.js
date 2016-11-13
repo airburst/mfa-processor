@@ -41,6 +41,7 @@ module.exports = class CouchService {
                 (err, data) => {
                     if (err) { reject(err) }
                     if (!data || (data === "")) { reject(data) }
+console.log(data)   //
                     resolve(JSON.parse(data).rows
                         .map(d => d.id)
                         .filter(a => a.indexOf('userdb') > -1)
