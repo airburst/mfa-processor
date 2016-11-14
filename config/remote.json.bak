@@ -1,0 +1,12 @@
+{
+    "couchdb": {
+        "remoteUrl": "couchdb.fairhursts.net:5984",
+        "adminUrl": "couchdb.fairhursts.net:5984",
+        "user": "processor",
+        "password": "MFAProcessorApp",
+        "completedDb": "completed-visits",
+        "pollingInterval": 15,
+        "newUserPollingInterval": 30,
+        "restPort": 6000
+    }
+}

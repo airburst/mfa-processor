@@ -142,7 +142,7 @@ module.exports = class CouchService {
                     if (includeDocs) { handleResponse(d.results.map(r => r.doc), this.databaseName) }
                     if (!includeDocs) { handleResponse(d.results, this.databaseName) }
                 } else {
-                    handleError(data)
+                    handleError(data, this.databaseName)
                 }
             })
         }

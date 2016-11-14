@@ -1,15 +1,14 @@
 #!/usr/bin/env node
-// import { install } from 'source-map-support';
-// install();
+const config = require('config')
 const winston = require('winston')
 import CouchService from './couchService'
 //import RestService from './restService'
 import { hexEncode, hexDecode } from './hexEncoder'
 
 // const restService = new RestService()
-const logFile = './logs/mfa-processor.log'
 
 // Set up logging transports
+const logFile = './logs/mfa-processor.log'
 const logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)(),
@@ -31,6 +30,7 @@ completedDatabase.getUserDatabaseList()
 
 // Store userdb instances in collection e.g. watchedDataBaseList[ 'userdb-xxxxxx', ... ]
 const start = (watchList) => {
+    logger.log('info', 'Connected to ' + config.get('couchdb.remoteUrl'))
     watchList.forEach(d => { addWatchToDatabase(d) })
     watchForNewUsers()
     logger.log('info', 'MFA Processing Service Running...')
@@ -43,12 +43,18 @@ const addWatchToDatabase = (d) => {
     logger.log('info', 'Subscribed to', d)
 }
 
+const removeWatchFromDatabase = (d) => {
+    watchedDatabaseList[d].unsubscribe()
+    watchedDatabaseList[d] = null
+    logger.log('info', 'Unsubscribed from', d)
+}
+
 // Add newly created user dbs to the watch list
 const watchForNewUsers = () => {
     const success = (change) => {
         change.forEach(c => {
             if (c.id.indexOf('org.couchdb.user:') > -1) {
-                checkNameAgainstWatchList(c.id.replace('org.couchdb.user:', ''))
+                checkNameAgainstWatchList(c.id.replace('org.couchdb.user:', ''), c.deleted)
             }
         })
     }
@@ -57,10 +63,13 @@ const watchForNewUsers = () => {
     users.subscribe(success, error, 'admin')
 }
 
-const checkNameAgainstWatchList = (name) => {
+const checkNameAgainstWatchList = (name, deleted) => {
     let dbName = 'userdb-' + hexEncode(name)
-    if (watchedDatabaseList[dbName] === undefined) {
+    if (!deleted && (watchedDatabaseList[dbName] === undefined)) {
         addWatchToDatabase(dbName)
+    }
+    if (deleted && (watchedDatabaseList[dbName] !== undefined)) {
+        removeWatchFromDatabase(dbName)
     }
 }
 
@@ -107,4 +116,4 @@ const remove = (id, db) => {
     watchedDatabaseList[db].remove(id, success, error)
 }
 
-const generalError = (err) => { logger.log('error', err) }
+const generalError = (err, database) => { logger.log('error', (database) ? database : '', err) }

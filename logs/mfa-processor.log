@@ -8,3 +8,57 @@
 {"level":"info","message":"START","timestamp":"2016-11-13T21:58:59.349Z"}
 {"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-13T21:58:59.498Z"}
 {"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-13T21:58:59.500Z"}
+{"level":"info","message":"START","timestamp":"2016-11-14T07:49:06.901Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-14T07:49:07.807Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-14T07:49:07.823Z"}
+{"level":"info","message":"Subscribed to userdb-7361726168","timestamp":"2016-11-14T07:49:23.064Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T07:49:38.383Z"}
+{"level":"info","message":"START","timestamp":"2016-11-14T07:52:37.033Z"}
+{"level":"info","message":"Connected to couchdb.fairhursts.net:5984","timestamp":"2016-11-14T07:52:37.267Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-14T07:52:37.267Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-14T07:52:37.267Z"}
+{"level":"info","message":"Subscribed to userdb-7361726168","timestamp":"2016-11-14T07:52:52.509Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T07:53:07.775Z"}
+{"level":"info","message":"START","timestamp":"2016-11-14T07:55:12.865Z"}
+{"level":"info","message":"Connected to couchdb.fairhursts.net:5984","timestamp":"2016-11-14T07:55:13.117Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-14T07:55:13.133Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-14T07:55:13.133Z"}
+{"level":"info","message":"Subscribed to userdb-7361726168","timestamp":"2016-11-14T07:55:28.380Z"}
+{"level":"info","message":"START","timestamp":"2016-11-14T07:57:43.609Z"}
+{"level":"info","message":"Connected to couchdb.fairhursts.net:5984","timestamp":"2016-11-14T07:57:43.816Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-14T07:57:43.816Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-14T07:57:43.816Z"}
+{"level":"info","message":"Subscribed to userdb-7361726168","timestamp":"2016-11-14T07:57:59.046Z"}
+{"level":"info","message":"START","timestamp":"2016-11-14T08:00:29.412Z"}
+{"level":"info","message":"Connected to couchdb.fairhursts.net:5984","timestamp":"2016-11-14T08:00:29.679Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-14T08:00:29.682Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-14T08:00:29.684Z"}
+{"level":"info","message":"Subscribed to userdb-746f6279","timestamp":"2016-11-14T08:02:00.033Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:02:15.335Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:02:30.283Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:02:45.286Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:03:00.289Z"}
+{"level":"info","message":"START","timestamp":"2016-11-14T08:10:08.001Z"}
+{"level":"info","message":"Connected to couchdb.fairhursts.net:5984","timestamp":"2016-11-14T08:10:08.313Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-14T08:10:08.313Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-14T08:10:08.329Z"}
+{"level":"info","message":"Subscribed to userdb-746f6279","timestamp":"2016-11-14T08:10:38.585Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:10:53.782Z"}
+{"level":"info","message":"Unsubscribed from userdb-746f6279","timestamp":"2016-11-14T08:11:08.862Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:11:09.033Z"}
+{"level":"info","message":"Subscribed to userdb-7361726168","timestamp":"2016-11-14T08:12:53.799Z"}
+{"level":"error","message":"{\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:13:09.025Z"}
+{"level":"info","message":"Unsubscribed from userdb-7361726168","timestamp":"2016-11-14T08:13:23.796Z"}
+{"level":"info","message":"START","timestamp":"2016-11-14T08:20:29.012Z"}
+{"level":"info","message":"Connected to couchdb.fairhursts.net:5984","timestamp":"2016-11-14T08:20:29.293Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-14T08:20:29.308Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-14T08:20:29.308Z"}
+{"level":"info","message":"Subscribed to userdb-7361726168","timestamp":"2016-11-14T08:20:59.554Z"}
+{"level":"error","message":"userdb-7361726168 {\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:21:14.750Z"}
+{"level":"error","message":"userdb-7361726168 {\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:21:29.770Z"}
+{"level":"info","message":"Unsubscribed from userdb-7361726168","timestamp":"2016-11-14T08:21:44.654Z"}
+{"level":"error","message":"userdb-7361726168 {\"error\":\"not_found\",\"reason\":\"Database does not exist.\"}\n","timestamp":"2016-11-14T08:21:44.810Z"}
+{"level":"info","message":"START","timestamp":"2016-11-14T08:26:07.218Z"}
+{"level":"info","message":"Connected to couchdb.fairhursts.net:5984","timestamp":"2016-11-14T08:26:07.506Z"}
+{"level":"info","message":"Subscribed to userdb-626f62","timestamp":"2016-11-14T08:26:07.506Z"}
+{"level":"info","message":"MFA Processing Service Running...","timestamp":"2016-11-14T08:26:07.506Z"}
